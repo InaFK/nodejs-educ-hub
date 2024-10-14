@@ -1,5 +1,7 @@
 import { stdin } from 'process';
 import { goUp, changeDirectory, listDirectoryContents } from './commands/navigation.js';
+import { readFileContent, deleteFile } from './commands/file-operations.js';
+import { handleError } from './utils/error-handler.js';
 
 export const handleCLI = (username, homeDir) => {
   let currentDir = homeDir;
@@ -24,25 +26,29 @@ export const handleCLI = (username, homeDir) => {
 
     const [command, ...args] = input.split(' ');
 
-    switch (command) {
-      case 'up':
-        currentDir = goUp(currentDir);
-        break;
+    try {
+        switch (command) {
+        case 'up':
+            currentDir = goUp(currentDir);
+            break;
 
-      case 'cd':
-        if (args[0]) {
-          currentDir = await changeDirectory(currentDir, args[0]);
-        } else {
-          console.log('Invalid input');
+        case 'cd':
+            if (args[0]) {
+            currentDir = await changeDirectory(currentDir, args[0]);
+            } else {
+                handleError('Invalid input: No directory provided.');
+            }
+            break;
+
+        case 'ls':
+            await listDirectoryContents(currentDir);
+            break;
+
+        default:
+            handleError('Invalid input: Unknown command.');
         }
-        break;
-
-      case 'ls':
-        await listDirectoryContents(currentDir);
-        break;
-
-      default:
-        console.log('Invalid input');
+    } catch (err) {
+        handleError('Operation failed: An error occurred.');
     }
 
     printCurrentDirectory();

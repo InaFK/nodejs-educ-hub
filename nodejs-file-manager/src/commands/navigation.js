@@ -1,3 +1,4 @@
+import { handleError } from '../utils/error-handler.js';
 import { readdir, stat } from 'fs/promises';
 import path from 'path';
 
@@ -7,7 +8,7 @@ export const goUp = (currentDir) => {
   if (parentDir !== currentDir) {
     return parentDir;
   }
-  console.log("You can't go higher than the root directory.");
+  handleError('Operation failed: You are at the root directory.');
   return currentDir;
 };
 
@@ -19,10 +20,10 @@ export const changeDirectory = async (currentDir, newDir) => {
     if (dirStat.isDirectory()) {
       return fullPath;
     } else {
-      console.log('Invalid input: Not a directory');
+        handleError('Invalid input: Not a directory.');
     }
   } catch (err) {
-    console.log('Operation failed');
+    handleError('Operation failed: Directory not found.');
   }
   return currentDir;
 };
@@ -31,7 +32,6 @@ export const changeDirectory = async (currentDir, newDir) => {
 export const listDirectoryContents = async (directory) => {
   try {
     const files = await readdir(directory, { withFileTypes: true });
-
     const folders = [];
     const filesList = [];
 
@@ -54,6 +54,6 @@ export const listDirectoryContents = async (directory) => {
     filesList.forEach(file => console.log(file));
 
   } catch (error) {
-    console.log('Operation failed');
+    handleError('Operation failed');
   }
 };
