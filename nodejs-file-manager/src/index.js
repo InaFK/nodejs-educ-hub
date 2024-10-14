@@ -8,9 +8,13 @@ const username = usernameArg ? usernameArg.split('=')[1] : 'User';
 const homeDir = homedir();
 let currentDir = homeDir;
 
+const printCurrentDirectory = () => {
+    console.log(`You are currently in ${currentDir}`);
+  };
+
 //- welcome message
 console.log(`Welcome to the File Manager, ${username}!`);
-console.log(`You are currently in ${currentDir}`);
+printCurrentDirectory();
 
 stdin.on('data', (data) => {
   const input = data.toString().trim();
@@ -20,5 +24,12 @@ stdin.on('data', (data) => {
     console.log(`Thank you for using File Manager, ${username}, goodbye!`);
     process.exit();
   }
-  console.log(`You are currently in ${currentDir}`);
+
+  printCurrentDirectory();
+});
+
+//- handle `Ctrl+c` (SIGINT)
+process.on('SIGINT', () => {
+    console.log(`\nThank you for using File Manager, ${username}, goodbye!`);
+    process.exit();
 });
