@@ -2,6 +2,7 @@ import { stdin } from 'process';
 import { goUp, changeDirectory, listDirectoryContents } from './commands/navigation.js';
 import { createFile, renameFile, copyFile, moveFile, deleteFile, readFileContent } from './commands/file-operations.js';
 import { handleError } from './utils/error-handler.js';
+import { compressFile, decompressFile } from './commands/compression.js';
 
 export const handleCLI = (username, homeDir) => {
   let currentDir = homeDir;
@@ -92,6 +93,24 @@ export const handleCLI = (username, homeDir) => {
                 await deleteFile(currentDir, args[0]);
             } else {
                 handleError('Invalid input: No file path provided.');
+            }
+            break;
+
+        case 'compress':
+            if (args[0] && args[1]) {
+                await compressFile(currentDir, args[0], args[1]);
+            }
+            else {
+                handleError('Invalid input: Provide source file and destination path.');
+            }
+            break;
+        
+        case 'decompress':
+            if (args[0] && args[1]) {
+                await decompressFile(currentDir, args[0], args[1]);
+            }
+            else {
+                handleError('Invalid input: Provide compressed file and destination path.');
             }
             break;
 
