@@ -1,6 +1,6 @@
 import { stdin } from 'process';
 import { goUp, changeDirectory, listDirectoryContents } from './commands/navigation.js';
-import { readFileContent, deleteFile } from './commands/file-operations.js';
+import { createFile, renameFile, copyFile, moveFile, deleteFile, readFileContent } from './commands/file-operations.js';
 import { handleError } from './utils/error-handler.js';
 
 export const handleCLI = (username, homeDir) => {
@@ -42,6 +42,57 @@ export const handleCLI = (username, homeDir) => {
 
         case 'ls':
             await listDirectoryContents(currentDir);
+            break;
+
+        case 'cat':
+            if (args[0]) {
+                await readFileContent(currentDir, args[0]);
+            } else {
+                handleError('Invalid input: No file path provided.');
+            }
+            break;
+
+        case 'add':
+            if (args[0]) {
+                 await createFile(currentDir, args[0]);
+            } else { 
+                handleError('Invalid input: No file name provided.');
+            }
+            break;
+      
+        case 'rn':
+            if (args[0] && args[1]) {
+                await renameFile(currentDir, args[0], args[1]);
+            }
+            else {
+                handleError('Invalid input: Provide old and new file names.');
+            }
+            break;
+
+        case 'cp':
+            if (args[0] && args[1]) {
+                await copyFile(currentDir, args[0], args[1]);
+            }
+            else {
+                handleError('Invalid input: Provide source file and destination directory.');
+            }
+            break;
+      
+        case 'mv':
+            if (args[0] && args[1]) {
+                await moveFile(currentDir, args[0], args[1]);
+            }
+            else {
+                handleError('Invalid input: Provide source file and destination directory.');
+            }
+            break;
+    
+        case 'rm':
+            if (args[0]) {
+                await deleteFile(currentDir, args[0]);
+            } else {
+                handleError('Invalid input: No file path provided.');
+            }
             break;
 
         default:
