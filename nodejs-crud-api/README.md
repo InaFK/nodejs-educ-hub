@@ -25,10 +25,10 @@ git clone https://github.com/InaFK/nodejs-educ-hub.git
 2. Navigate to the project folder:
 cd nodejs-crud-api
 
-3.Install the required dependencies:
+3. Install the required dependencies:
 npm install
 
-4.Create a .env file in the root folder and specify the port for your server:
+4. Create a .env file in the root folder and specify the port for your server:
 PORT=4000
 
 ## Scripts
@@ -64,9 +64,11 @@ The API provides CRUD functionality for managing users. Each user has the follow
 ### 2. Get User by ID
 - GET /api/users/{userId}
 - Response:
--- 200 OK with the user object if found
--- 400 Bad Request if the userId is invalid
--- 404 Not Found if the user doesn't exist
+200 OK with the user object if found
+
+400 Bad Request if the userId is invalid
+
+404 Not Found if the user doesn't exist
 
 ### 3. Create a New User
 - POST /api/users
@@ -82,8 +84,9 @@ The API provides CRUD functionality for managing users. Each user has the follow
 ```
 - Response:
 
--- 201 Created with the newly created user
--- 400 Bad Request if the required fields are missing
+201 Created with the newly created user
+
+400 Bad Request if the required fields are missing
 
 ### 4. Update an Existing User
 - PUT /api/users/{userId}
@@ -105,9 +108,11 @@ The API provides CRUD functionality for managing users. Each user has the follow
 ### 5. Delete a User
 - DELETE /api/users/{userId}
 - Response:
--- 204 No Content if the user is successfully deleted
--- 400 Bad Request if the userId is invalid
--- 404 Not Found if the user doesn't exist
+204 No Content if the user is successfully deleted
+
+400 Bad Request if the userId is invalid
+
+404 Not Found if the user doesn't exist
 
 ### 6. Handle Non-existing Endpoints
 - Any other route will return 404 Not Found.
