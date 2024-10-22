@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-crud-api",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "ts-node src/app.ts",
+    "start:dev": "ts-node-dev src/app.ts",
+    "start:prod": "tsc && node dist/app.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^10.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^2.0.0",
+    "ts-node": "^10.0.0",
+    "ts-node-dev": "^1.0.0",
+    "typescript": "^4.0.0"
+  }
+}
