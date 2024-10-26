@@ -16,3 +16,6 @@ export const createServer = () => {
 
   return server;
 };
+
+createServer();
+
