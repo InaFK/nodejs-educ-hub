@@ -3,6 +3,5 @@ export interface User {
     username: string;
     age: number;
     hobbies: string[];
-}
-
-export const users: User[] = [];
+  }
+  
