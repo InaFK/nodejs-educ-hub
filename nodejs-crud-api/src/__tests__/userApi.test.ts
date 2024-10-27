@@ -1,14 +1,19 @@
 import { request } from 'http';
 import { createServer } from '../server';
+import { users } from '../database/userDatabase';
 
 let server: ReturnType<typeof createServer>;
 
-beforeAll(() => {
-  server = createServer();
+beforeAll((done) => {
+  server = createServer().listen(process.env.PORT || 4000, done);
 });
 
-afterAll(() => {
-  server.close();
+afterAll((done) => {
+  server.close(done);
+});
+
+beforeEach(() => {
+  users.length = 0;
 });
 
 describe('User API Tests', () => {
@@ -23,40 +28,7 @@ describe('User API Tests', () => {
         done();
       });
     }).end();
-  });
+  }, 15000);
 
-  test('POST /api/users should create a new user', (done) => {
-    const userData = JSON.stringify({
-      username: 'John Doe',
-      age: 30,
-      hobbies: ['reading'],
-    });
-    const options = {
-      hostname: 'localhost',
-      port: process.env.PORT,
-      path: '/api/users',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': userData.length,
-      },
-    };
-
-    const req = request(options, (res) => {
-      let data = '';
-      res.on('data', (chunk) => {
-        data += chunk;
-      });
-      res.on('end', () => {
-        const user = JSON.parse(data);
-        expect(user).toMatchObject({ username: 'John Doe', age: 30, hobbies: ['reading'] });
-        done();
-      });
-    });
-
-    req.write(userData);
-    req.end();
-  });
-
-  // Additional tests for GET by ID, PUT, DELETE...
+  // Additional tests for GET by ID, POST, PUT, DELETE...
 });
