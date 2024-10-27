@@ -1,7 +1,9 @@
 import { ServerResponse } from 'http';
-import { validate as isUUID } from 'uuid';
-// import { getUsers, getUser, createUser, updateUser, deleteUser } from '../database/userDatabase';
+import { validate as isUUID, v4 as uuidv4 } from 'uuid';
 import { getUsers, getUser } from '../database/userDatabase';
+import { User } from '../types/userTypes';
+
+const users: User[] = [];
 
 export const getAllUsers = (res: ServerResponse) => {
   const users = getUsers();
@@ -25,4 +27,26 @@ export const getUserById = (userId: string, res: ServerResponse) => {
     res.writeHead(404, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'User not found' }));
   }
+};
+
+export const createUser = async (userData: Partial<User>, res: ServerResponse) => {
+  const { username, age, hobbies } = userData;
+
+  if (!username || typeof age !== 'number' || !Array.isArray(hobbies)) {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Request body must include username, age (number), and hobbies (array).' }));
+    return;
+  }
+
+  const newUser: User = {
+    id: uuidv4(),
+    username,
+    age,
+    hobbies
+  };
+
+  users.push(newUser);
+
+  res.writeHead(201, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(newUser));
 };
